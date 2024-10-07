@@ -1,0 +1,14 @@
+body {
+    background-color: #f8f9fa;
+}
+.card {
+    margin-top: 50px;
+}
+.card-header {
+    background-color: #dc3545;
+    color: white;
+}
+.btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}

@@ -1,0 +1,122 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href=" {% static 'home/css/home.css' %}" />
+    <link rel="stylesheet" href="{% static 'campos/css/campos_list.css' %}" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <title>Seus Campos</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg custom-navbar">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'home' %}">CampoFácil</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#offcanvasDarkNavbar"
+          aria-controls="offcanvasDarkNavbar"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div
+          class="offcanvas offcanvas-end text-bg-dark"
+          tabindex="-1"
+          id="offcanvasDarkNavbar"
+          aria-labelledby="offcanvasDarkNavbarLabel"
+        >
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">
+              CampoFácil
+            </h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="offcanvas"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="offcanvas-body">
+            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="{% url 'profile' %}">Meu Perfil</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="{% url 'busca_campos' %}">Campos</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="{% url 'logout' %}">Sair</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container mt-5">
+      <h2 class="text-center mb-4">Meus Campos</h2>
+      <div class="add-new-field text-center mb-4">
+        <a href="{% url 'campo_create' %}" class="btn btn-primary btn-no-hover">Adicionar Novo Campo</a>
+        <a href="{% url 'bloquear_dia' %}" class="btn btn-primary btn-no-hover">Bloquear dias</a>
+        <a href="{% url 'export_reservas_csv' %}" class="btn btn-primary btn-no-hover">Gerar Relatório CSV</a>
+        <a href="{% url 'exportar_para_pdf' %}" class="btn btn-primary btn-no-hover">Gerar Relatório PDF</a>
+        <a href="{% url 'exportar_para_pdf_cancelamentos' %}" class="btn btn-primary btn-no-hover" >Gerar Relatório PDF Cancelamentos</a>
+      </div>
+
+      <div class="row">
+        {% for campo in campos %}
+        <div class="col-12 mb-4">
+          <div class="card h-100">
+            {% if campo.fotos.count == 1 %}
+            <img src="{{ campo.fotos.first.imagem.url }}" class="card-img-top img-custom" alt="Foto de {{ campo.nome }}">
+            {% elif campo.fotos.count > 1 %}
+            <div id="carousel-{{ campo.pk }}" class="carousel slide" data-bs-ride="carousel">
+              <div class="carousel-inner">
+                {% for foto in campo.fotos.all %}
+                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                  <img src="{{ foto.imagem.url }}" class="d-block w-100 img-custom" alt="Foto de {{ campo.nome }}">
+                </div>
+                {% endfor %}
+              </div>
+              <button class="carousel-control-prev" type="button" data-bs-target="#carousel-{{ campo.pk }}" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#carousel-{{ campo.pk }}" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+              </button>
+            </div>
+            {% endif %}
+            <div class="card-body">
+              <h5 class="card-title">{{ campo.nome }}</h5>
+              <div class="d-flex justify-content-between">
+                <a href="{% url 'campo_update' campo.pk %}" class="btn btn-warning btn-no-hover">Editar</a>
+                <a href="{% url 'campo_delete' campo.pk %}" class="btn btn-danger btn-no-hover">Deletar</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </main>
+
+    <footer class="text-center text-lg-start">
+      <div class="text-center p-3" style="color: white;">© 2024 Copyright:</div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  </body>
+</html>

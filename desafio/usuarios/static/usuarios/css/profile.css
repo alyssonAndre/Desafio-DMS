@@ -1,0 +1,188 @@
+/* Container da foto do perfil */
+.profile-picture-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Cabeçalho da foto do perfil */
+.profile-picture-header {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+/* Imagem do perfil */
+.profile-picture {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ccc;
+    margin-bottom: 10px;
+}
+
+/* Espaço reservado para a foto do perfil */
+.profile-picture-placeholder {
+    width: 150px;
+    height: 150px;
+    background-color: #ddd;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2em;
+    color: #777;
+}
+
+/* Texto no espaço reservado para a foto */
+.profile-picture-placeholder p {
+    margin: 0;
+    color: #007bff;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* Container do formulário */
+.form-container {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+/* Rótulos do formulário */
+form label {
+    font-weight: bold;
+}
+
+/* Campos do formulário */
+form .form-control {
+    border-radius: 5px;
+}
+
+/* Botão de salvar */
+form .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+form .btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+/* Botão de remover foto */
+.btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+}
+
+/* Remove a borda azul dos campos de formulário quando estão em foco */
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    border: 1px solid #ced4da !important;
+    border-radius: .25rem;
+}
+
+/* Botão de edição */
+.edit-button {
+    display: block;
+    margin-top: 10px;
+    cursor: pointer;
+    color: #007bff;
+    border: none;
+    background: none;
+    text-decoration: underline;
+}
+
+/* Botão de salvar */
+.save-button {
+    display: none;
+}
+
+/* Modo de edição */
+.edit-mode .form-control {
+    background-color: #fff;
+    cursor: text;
+}
+
+.edit-mode .edit-button {
+    display: none;
+}
+
+.edit-mode .save-button {
+    display: block;
+}
+
+.edit-checkbox {
+    display: none;
+}
+
+.edit-checkbox:checked~.form-container {
+    position: relative;
+}
+
+.edit-checkbox:checked~.form-container .form-control {
+    background-color: #fff;
+    cursor: text;
+}
+
+.edit-checkbox:checked~.form-container .edit-button {
+    display: none;
+}
+
+.edit-checkbox:checked~.form-container .save-button {
+    display: block;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.form-control[readonly] {
+    background-color: #e9ecef; /* Cor para campos readonly */
+}
+
+
+.form-check-input {
+    margin-left: 0.25em;
+}
+
+.form-check-label {
+    margin-left: 1em;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+footer {
+    color: white;
+    padding: 1rem;
+    text-align: center;
+}

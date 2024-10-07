@@ -1,0 +1,143 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body,
+html {
+    height: 100%;
+}
+
+a:hover {
+
+    color: greenyellow !important;
+
+}
+
+a {
+    text-decoration: none !important;
+}
+
+h1 {
+    color: #000 !important;
+}
+
+.circle-icon {
+    border: 2px solid #69f0ae;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 15px;
+}
+
+.circle-icon i {
+    color: #69f0ae;
+    font-size: 24px;
+}
+
+.rating-stars i {
+    color: #ffeb3b;
+    font-size: 24px;
+    margin: 0 2px;
+}
+
+section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 300px;
+    /* Ajuste o valor conforme necessário */
+}
+
+.background-container {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.background-container img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
+
+.background-container .text-content {
+    position: relative;
+    color: white;
+    font-size: 1.5em;
+}
+
+/* Estilos para a navbar */
+.custom-navbar {
+    background-color: #000;
+    /* Define a cor de fundo da navbar como preta */
+    padding: 1rem 0 !important;
+}
+
+.custom-navbar .navbar-brand {
+    font-size: 1.5rem;
+    /* Ajusta o tamanho do texto da marca */
+    color: #fff;
+    /* Define a cor do texto da marca como branco */
+}
+
+.custom-navbar .navbar-nav .nav-link {
+    font-size: 1.2rem;
+    /* Ajusta o tamanho do texto dos links */
+    color: #fff;
+    /* Define a cor do texto dos links como branco */
+}
+
+.custom-navbar .navbar-nav .nav-link.active {
+    color: #fff;
+    /* Define a cor dos links ativos */
+}
+
+/* Estilos para a offcanvas */
+.custom-offcanvas {
+    width: 250px !important;
+    /* Ajusta a largura da offcanvas */
+    background-color: #000 !important;
+    /* Define a cor de fundo da offcanvas como preta */
+}
+
+.custom-offcanvas .offcanvas-header {
+    font-size: 1.25rem !important;
+    /* Ajusta o tamanho do texto do cabeçalho da offcanvas */
+    color: #fff !important;
+    /* Define a cor do texto do cabeçalho da offcanvas como branco */
+}
+
+.custom-offcanvas .offcanvas-body {
+    color: #fff !important;
+    /* Define a cor do texto da offcanvas como branco */
+}
+
+/* Estilos para o footer */
+footer {
+    background-color: #000;
+    /* Define a cor de fundo do footer como preta */
+    padding: 2rem 0;
+    /* Aumenta o padding para aumentar a altura do footer */
+    color: #fff;
+    /* Define a cor do texto no footer como branca */
+    font-size: 1.25rem;
+    /* Ajusta o tamanho da fonte do texto no footer */
+}
+
+/* Estilos adicionais para o texto do footer */
+footer .text-center {
+    font-size: 1.25rem;
+    /* Ajusta o tamanho da fonte do texto centralizado */
+}

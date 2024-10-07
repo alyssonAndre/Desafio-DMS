@@ -1,0 +1,73 @@
+version: '3.9'
+
+services:
+  desafio:
+    container_name: desafio
+    build:
+      context: .
+    ports:
+      - 8000:8000
+    volumes:
+      - ./desafio:/desafio
+      - ./data/web/static:/data/web/static/
+      - ./data/web/media:/data/web/media/
+    env_file:
+      - ./dotenv_files/.env
+    depends_on:
+      - psql
+      - redis
+    networks:
+      - app-network
+
+  psql:
+    container_name: psql
+    image: postgres:13-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - ./dotenv_files/.env
+    networks:
+      - app-network
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - 443:443
+    volumes:
+      - ./certs:/etc/nginx/ssl
+      - ./default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - desafio
+    networks:
+      - app-network
+
+  celery:
+    build: .
+    
+    command: celery -A desafio worker -l INFO
+    
+    env_file:
+      - ./dotenv_files/.env
+    
+    volumes:
+      - ./desafio:/desafio
+    
+    depends_on:
+      - desafio
+      - redis
+    
+    networks:
+      - app-network
+
+  redis:
+    image: redis:alpine
+    
+    networks:
+      - app-network
+    
+volumes:
+  postgres_data:
+
+networks:
+  app-network:
+    driver: bridge

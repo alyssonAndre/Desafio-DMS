@@ -1,0 +1,66 @@
+/* Ajustes para o card */
+.card {
+    border-radius: .5rem;
+}
+
+/* Botão personalizado */
+.btn-custom-size {
+    padding: 0.75rem 1.25rem;
+    font-size: 1.125rem;
+}
+
+/* Estilo do card com sombra */
+.card.shadow-2-strong {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* Estilo para o form */
+form {
+    margin-top: 1.5rem;
+}
+
+form .form-control {
+    border-radius: .375rem;
+    box-shadow: none;
+    border-color: #ced4da;
+}
+
+form .form-label {
+    margin-bottom: .5rem;
+}
+
+footer p {
+    margin: 0;
+}
+
+form p {
+    margin-bottom: 1.5rem;
+}
+
+form label {
+    display: block;
+    font-size: 1rem;
+    margin-bottom: .5rem;
+    color: #333;
+}
+
+form input {
+    display: block;
+    width: 100%;
+    padding: .5rem .75rem;
+    font-size: 1rem;
+    line-height: 1.25;
+    color: #495057;
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+
+form .btn {
+    padding: .75rem 1.25rem;
+    font-size: 1rem;
+    border-radius: .25rem;
+}
+

@@ -1,0 +1,52 @@
+{% load i18n %}
+{% load allauth %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% trans "Recovery Codes" %}</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'usuarios/css/generate.css' %}">
+
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h1 class="h4 mb-0">{% trans "Recovery Codes" %}</h1>
+                    </div>
+                    <div class="card-body">
+                        <p class="lead">
+                            {% blocktranslate %}You are about to generate a new set of recovery codes for your account.{% endblocktranslate %}
+                        </p>
+                        {% if unused_code_count %}
+                            <p class="text-danger">
+                                {% blocktranslate %}This action will invalidate your existing codes.{% endblocktranslate %}
+                            </p>
+                        {% endif %}
+                        <p>
+                            {% blocktranslate %}Are you sure?{% endblocktranslate %}
+                        </p>
+                    </div>
+                    <div class="card-footer text-center">
+                        {% url 'mfa_generate_recovery_codes' as action_url %}
+                        <form method="post" action="{{ action_url }}">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <button type="submit" class="btn {% if unused_code_count %}btn-danger{% else %}btn-primary{% endif %}">
+                                {% trans "Generate" %}
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

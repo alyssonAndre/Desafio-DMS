@@ -1,0 +1,119 @@
+{% load static %}
+{% load allauth %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'home/css/home.css' %}" />
+    <link rel="stylesheet" href="{% static 'usuarios/css/profile.css' %}" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+    <title>{% trans "Two-Factor Authentication" %}</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg custom-navbar ">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'home' %}">CampoFácil</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">CampoFácil</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{% url 'profile' %}">Meu Perfil</a>
+                        </li>
+                        {% if request.user.userprofile.is_locador %}
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{% url 'campo_list' %}">Seus Campos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{% url 'minhas_reservas' %}">Minhas Reservas</a>
+                        </li>
+                        {% endif %}
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{% url 'logout' %}">Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mt-5">
+        <h2 class="text-center mb-4">{% trans "Two-Factor Authentication" %}</h2>
+
+        {% if "totp" in MFA_SUPPORTED_TYPES %}
+            <div class="card mb-4 border-primary">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">{% trans "Authenticator App" %}</h3>
+                </div>
+                <div class="card-body">
+                    {% if authenticators.totp %}
+                        <p class="text-success">{% trans "Authentication using an authenticator app is active." %}</p>
+                    {% else %}
+                        <p class="text-danger">{% trans "An authenticator app is not active." %}</p>
+                    {% endif %}
+                </div>
+                <div class="card-footer">
+                    {% url 'mfa_deactivate_totp' as deactivate_url %}
+                    {% url 'mfa_activate_totp' as activate_url %}
+                    {% if authenticators.totp %}
+                        <a href="{{ deactivate_url }}" class="btn btn-danger">{% trans "Deactivate" %}</a>
+                    {% else %}
+                        <a href="{{ activate_url }}" class="btn btn-primary">{% trans "Activate" %}</a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+
+        {% if "recovery_codes" in MFA_SUPPORTED_TYPES %}
+            {% with total_count=authenticators.recovery_codes.generate_codes|length unused_count=authenticators.recovery_codes.get_unused_codes|length %}
+                <div class="card border-secondary">
+                    <div class="card-header bg-secondary text-white">
+                        <h3 class="mb-0">{% trans "Recovery Codes" %}</h3>
+                    </div>
+                    <div class="card-body">
+                        {% if authenticators.recovery_codes %}
+                            <p>
+                                {% blocktranslate count unused_count=unused_count %}There is {{ unused_count }} out of {{ total_count }} recovery code available.{% plural %}There are {{ unused_count }} out of {{ total_count }} recovery codes available.{% endblocktranslate %}
+                            </p>
+                        {% else %}
+                            <p class="text-danger">{% trans "No recovery codes set up." %}</p>
+                        {% endif %}
+                    </div>
+                    {% if is_mfa_enabled %}
+                        <div class="card-footer">
+                            {% if authenticators.recovery_codes %}
+                                {% if unused_count > 0 %}
+                                    {% url 'mfa_view_recovery_codes' as view_url %}
+                                    <a href="{{ view_url }}" class="btn btn-secondary me-2">{% trans "View" %}</a>
+                                    {% url 'mfa_download_recovery_codes' as download_url %}
+                                    <a href="{{ download_url }}" class="btn btn-secondary me-2">{% trans "Download" %}</a>
+                                {% endif %}
+                            {% endif %}
+                            {% url 'mfa_generate_recovery_codes' as generate_url %}
+                            <a href="{{ generate_url }}" class="btn btn-primary">{% trans "Generate" %}</a>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endwith %}
+        {% endif %}
+    </main>
+
+    <footer class="text-center text-lg-start">
+        <div class="text-center p-3" style="color: white;">© 2024 Copyright:</div>
+    </footer>
+
+    <script src="{% static 'usuarios/js/profile.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

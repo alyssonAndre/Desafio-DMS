@@ -1,0 +1,168 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f7f7f7;
+    margin: 0;
+    padding: 20px;
+}
+
+form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2, h3 {
+    color: #333;
+}
+
+form p {
+    margin-bottom: 15px;
+}
+
+form label {
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="password"],
+form textarea,
+form select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+form button[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+form button[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+form .formset {
+    margin-top: 20px;
+}
+
+form .formset p {
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
+
+
+.field-disabled {
+    background-color: #e9ecef; 
+    border-color: #ced4da;
+    color: #6c757d; 
+}
+
+.campo-card {
+    margin-bottom: 20px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+.campo-card img {
+    width: 100%;       
+    height: 200px;      
+    object-fit: cover;  
+    border-radius: 8px; 
+    margin-bottom: 10px;
+}
+
+
+
+.comentario strong {
+    font-size: 1.1em;
+}
+.btn-comentar {
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+.placeholder-foto {
+    width: 150px;
+    height: 100px;
+    background-color: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #555;
+}
+#map { height: 500px !important; }
+
+#map2{ height: 500px !important; }
+
+
+
+.btn-no-hover {
+    text-decoration: none;
+    color: inherit;
+}
+
+.btn-no-hover:hover {
+    text-decoration: none !important;
+    color: inherit !important;
+}
+
+.btn-comentar {
+    margin-top: 10px;
+}
+
+
+.campo-card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.img-fluid {
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.comentarios-section {
+    margin-top: 20px;
+}
+
+.comentario {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.comentario p {
+    margin: 0;
+}
+
+.rating {
+    display: flex;
+    direction: row;
+    font-size: 1.5em; /* Tamanho das estrelas */
+}
+
+.rating i {
+    margin-right: 5px; /* Espaçamento entre as estrelas */
+}
+
+.rating .fa-star {
+    color: gold; /* Cor das estrelas preenchidas */
+}
+
+.rating .fa-star-o {
+    color: #ddd; /* Cor das estrelas vazias */
+}

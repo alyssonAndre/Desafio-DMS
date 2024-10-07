@@ -1,0 +1,35 @@
+{% load static %}
+{% load i18n %}
+{% load allauth %}
+{% block head_title %}
+<link rel="stylesheet" href="{% static 'usuarios/css/mfa_authenticate.css' %}">
+{% endblock head_title %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-header">
+        <h1 class="auth-title">{% trans "Two-Factor Authentication" %}</h1>
+        <p class="auth-subtitle">
+            {% blocktranslate %}Your account is protected by two-factor authentication. Please enter an authenticator code:{% endblocktranslate %}
+        </p>
+    </div>
+    
+    {% url 'mfa_authenticate' as action_url %}
+    <form class="auth-form" method="post" action="{{ action_url }}">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            {{ form.code.label_tag }}
+            {{ form.code }}
+            {% if form.code.errors %}
+                <div class="form-error">{{ form.code.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="auth-actions">
+            <button type="submit" class="btn btn-primary btn-block">{% trans "Sign In" %}</button>
+            <a href="{{ login_url }}" class="btn btn-secondary btn-block">{% trans "Cancel" %}</a>
+        </div>
+    </form>
+</div>
+{% endblock content %}

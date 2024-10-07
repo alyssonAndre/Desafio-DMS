@@ -1,0 +1,92 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'home/css/home.css' %}" />
+    <link rel="stylesheet" href="{% static 'campos/css/reservas.css' %}" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+    <title>Minhas Reservas</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg custom-navbar">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'home' %}">CampoFácil</a>
+        <button style="background-color: white !important;" class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="offcanvas offcanvas-end bg-dark text-white" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">CampoFácil</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+              </li>
+              {% if user.is_authenticated %}
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'profile' %}">
+                    {% if user.first_name and user.last_name %}
+                      {{ user.get_full_name }}
+                    {% else %}
+                      {{ user.username }}
+                    {% endif %}
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'busca_campos' %}">Campos</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'logout' %}">Sair</a>
+                </li>
+              {% else %}
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'login' %}">Login</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'register' %}">Cadastrar-se</a>
+                </li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <main class="container my-4">
+      <h2 class="text-center mb-4">Minhas Reservas</h2>
+      <div class="reservas-container">
+        {% if reservas %}
+          {% for reserva in reservas %}
+            <div class="reserva-card">
+              <div class="row">
+                <div class="col-md-4">
+                {% if reserva.campo.fotos.all %}
+                  <img src="{{ reserva.campo.fotos.all.0.imagem.url }}" alt="Imagem do campo" class="img-fluid rounded" />
+                {% else %}
+                  <img src="{% static 'default.jpg' %}" alt="Imagem padrão do campo" class="img-fluid rounded" />
+                {% endif %}
+                  </div>
+                <div class="col-md-8">
+                  <h3><a href="{% url 'busca_campos' %}">{{ reserva.campo.nome }}</a></h3>
+                  <p><strong>Data:</strong> {{ reserva.data_reserva }}</p>
+                  <p><strong>Hora de Início:</strong> {{ reserva.hora_inicio }}</p>
+                  <p><strong>Hora de Fim:</strong> {{ reserva.hora_fim }}</p>
+                  <p><strong>Valor Total:</strong> R$ {{ reserva.valor_total }}</p>
+                  <p><strong>Status:</strong> {% if reserva.bloqueado %} Bloqueado {% else %} Ativo {% endif %}</p>
+                  <a href="{% url 'cancelar_reserva' reserva.id %}" class="btn btn-danger">Cancelar Reserva</a>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <p class="text-center">Você ainda não fez reservas.</p>
+        {% endif %}
+      </div>
+    </main>
+    <footer class="text-center text-lg-start">
+      <div class="text-center p-3" style="color: white;">© 2024 Copyright:</div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  </body>
+</html>

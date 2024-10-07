@@ -1,0 +1,32 @@
+.btn-no-hover {
+    text-decoration: none;
+    color: inherit;
+}
+
+.btn-no-hover:hover {
+    text-decoration: none !important;
+    color: inherit !important;
+}
+
+a:hover {
+    color: greenyellow !important;
+}
+
+.img-custom {
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    height: 300px;
+    object-fit: cover;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}

@@ -1,0 +1,149 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reservar</title>
+    <link rel="stylesheet" href="{% static 'home/css/home.css' %}" />
+    <link rel="stylesheet" href="{% static 'campos/css/campos_form.css' %}" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+  </head>
+
+  <body>
+    <nav class="navbar navbar-expand-lg custom-navbar">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'home' %}">CampoFácil</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">CampoFácil</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="{% url 'profile' %}">Meu Perfil</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="{% url 'busca_campos' %}">Campos</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="{% url 'logout' %}">Sair</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container mt-4">
+      <form id="reserva-form" method="post" action="{% url 'reservar_campo' campo.id %}">
+        {% csrf_token %}
+        
+        {% for message in messages %}
+          <div class="alert alert-danger">
+            <p>{{ message }}</p>
+          </div>
+        {% endfor %}
+        
+        {% if form.errors %}
+          <div class="alert alert-danger">
+            {% for field in form %}
+              {% for error in field.errors %}
+                <p>{{ error }}</p>
+              {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+              <p>{{ error }}</p>
+            {% endfor %}
+          </div>
+        {% endif %}
+        
+        <div class="mb-3">
+          <label for="data_reserva" class="form-label">Data da Reserva:</label>
+          <input type="date" id="data_reserva" name="data_reserva" class="form-control" value="{{ data_reserva }}" required />
+        </div>
+    
+        <div class="mb-3">
+          <label for="hora_inicio" class="form-label">Hora de Início:</label>
+          <input type="time" id="hora_inicio" name="hora_inicio" class="form-control" value="{{ hora_inicio }}" required />
+        </div>
+    
+        <div class="mb-3">
+          <label for="hora_fim" class="form-label">Hora de Término:</label>
+          <input type="time" id="hora_fim" name="hora_fim" class="form-control" value="{{ hora_fim }}" required />
+        </div>
+    
+        <div class="mb-3">
+          <label for="valor_total" class="form-label">Valor Total:</label>
+          <input type="text" id="valor_total" name="valor_total" class="form-control" readonly value="{{ valor_total|default_if_none:'' }}" />
+        </div>
+        
+        <button type="submit" class="btn btn-success">Reservar</button>
+      </form>
+    </div>
+
+    <footer class="text-center text-lg-start">
+      <div class="text-center p-3" style="color: white;">© 2024 Copyright:</div>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const dataReservaInput = document.getElementById('data_reserva');
+        const horaInicioInput = document.getElementById('hora_inicio');
+        const horaFimInput = document.getElementById('hora_fim');
+        const valorTotalInput = document.getElementById('valor_total');
+        const precoHora = parseFloat('{{ preco_hora|default:"0" }}');
+      
+        if (isNaN(precoHora)) {
+          console.error('Valor de preco_hora é inválido:', '{{ preco_hora|default:"0" }}');
+          return;
+        }
+      
+        function calcularValorTotal() {
+          const horaInicio = horaInicioInput.value;
+          const horaFim = horaFimInput.value;
+        
+          if (horaInicio && horaFim) {
+            const [horaInicioHoras, horaInicioMinutos] = horaInicio.split(':').map(Number);
+            const [horaFimHoras, horaFimMinutos] = horaFim.split(':').map(Number);
+        
+            const inicio = new Date(0, 0, 0, horaInicioHoras, horaInicioMinutos, 0);
+            const fim = new Date(0, 0, 0, horaFimHoras, horaFimMinutos, 0);
+        
+            if (fim <= inicio) {
+              valorTotalInput.value = 'Hora de término deve ser após a hora de início';
+              return;
+            }
+        
+            const duracao = (fim - inicio) / 1000 / 60 / 60;
+        
+            if (duracao < 1) {
+              valorTotalInput.value = 'A reserva deve durar pelo menos 1 hora';
+              return;
+            }
+        
+            const valorTotal = duracao * precoHora;
+        
+            if (valorTotal > 0) {
+              valorTotalInput.value = `R$ ${valorTotal.toFixed(2).replace('.', ',')}`;
+            } else {
+              valorTotalInput.value = '';
+            }
+          } else {
+            valorTotalInput.value = '';
+          }
+        }
+        
+        dataReservaInput.addEventListener('input', calcularValorTotal);
+        horaInicioInput.addEventListener('input', calcularValorTotal);
+        horaFimInput.addEventListener('input', calcularValorTotal);
+      });
+    </script>
+  </body>
+</html>

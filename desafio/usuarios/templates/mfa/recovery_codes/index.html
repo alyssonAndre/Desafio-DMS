@@ -1,0 +1,91 @@
+{% load static %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'home/css/home.css' %}" />
+    <link rel="stylesheet" href="{% static 'usuarios/css/profile.css' %}" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+    <title>
+      {% block head_title %}
+        Recuperação de Códigos
+      {% endblock %}
+    </title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg custom-navbar">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'home' %}">CampoFácil</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">CampoFácil</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="{% url 'profile' %}">Meu Perfil</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="{% url 'logout' %}">Logout</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container mt-5">
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <div class="card border-primary shadow-sm">
+            <div class="card-header bg-primary text-white">
+              <h4 class="mb-0">
+                {% block h1 %}
+                  Códigos de Recuperação
+                {% endblock %}
+              </h4>
+            </div>
+            <div class="card-body">
+              <p class="text-muted mb-4">
+                {% blocktranslate count unused_count=unused_codes|length %}Há {{ unused_count }} de {{ total_count }} códigos de recuperação disponíveis.{% plural %}Há {{ unused_count }} de {{ total_count }} códigos de recuperação disponíveis.{% endblocktranslate %}
+              </p>
+              <div class="mb-4">
+                <label for="recovery_codes" class="form-label fw-bold">{% trans 'Códigos Não Utilizados' %}</label>
+                <ul class="list-group">
+                  {% for code in unused_codes %}
+                    <li class="list-group-item">{{ code }}</li>
+                  {% empty %}
+                    <li class="list-group-item">
+                      {% trans 'Nenhum código disponível.' %}
+                    </li>
+                  {% endfor %}
+                </ul>
+              </div>
+              {% if unused_codes %}
+                <div class="mb-3">
+                  {% url 'mfa_download_recovery_codes' as download_url %}
+                  <a href="{{ download_url }}" class="btn btn-primary">{% trans 'Baixar Códigos' %}</a>
+                </div>
+              {% endif %}
+              <div>
+                {% url 'mfa_generate_recovery_codes' as generate_url %}
+                <a href="{{ generate_url }}" class="btn btn-secondary">{% trans 'Gerar Novos Códigos' %}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="text-center text-lg-start">
+      <div class="text-center p-3" style="color: white;">© 2024 Copyright:</div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

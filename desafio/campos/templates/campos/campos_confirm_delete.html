@@ -1,0 +1,19 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deletar</title>
+  <link rel="stylesheet" href="{% static 'campos/css/deletar_campos.css' %}">
+</head>
+<body>
+  <h2>Deletar Campo</h2>
+  <p>Tem certeza que deseja deletar "{{ campo.nome }}"?</p>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit">Confirmar</button>
+  </form>
+  <a href="{% url 'campo_list' %}">Cancelar</a>
+</body>
+</html>
